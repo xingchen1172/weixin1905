@@ -37,19 +37,19 @@ class WxController extends Controller
 
 
         //处理xml数据
-        $xml_obj = simplexml_load_string($xml_str);
+        // $xml_obj = simplexml_load_string($xml_str);
 
 
-        //获取事件类型
-        $event = $xml_obj->Event;
-        if($event=='subscribe'){
-            //获取用户的openid
-            $openid=$xml_obj->FromUserName;
-            //获取用户信息
-            $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$openid.'&lang=zh_CN';
-            $user_info = file_get_contents($url);
-            file_put_contents('wx_user.log',$user_info,FILE_APPEND);
-        }
+        // //获取事件类型
+        // $event = $xml_obj->Event;
+        // if($event=='subscribe'){
+        //     //获取用户的openid
+        //     $openid=$xml_obj->FromUserName;
+        //     //获取用户信息
+        //     $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$openid.'&lang=zh_CN';
+        //     $user_info = file_get_contents($url);
+        //     file_put_contents('wx_user.log',$user_info,FILE_APPEND);
+        // }
       }
 
 
