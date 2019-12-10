@@ -14,3 +14,13 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('info',function(){
+	phpInfo();
+});
+
+Route::prefix('wx')->group(function(){
+   Route::any('/wxchet','Weixin\WxController@wxchet');//微信方法
+   Route::any('/GetuserInfo','Weixin\WxController@GetuserInfo');//微信方法
+
+});
