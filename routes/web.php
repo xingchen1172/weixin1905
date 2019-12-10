@@ -19,8 +19,8 @@ Route::get('info',function(){
 	phpInfo();
 });
 
-Route::prefix('wx')->group(function(){
-   Route::any('/wxchet','Weixin\WxController@wxchet');//微信方法
-   Route::any('/GetuserInfo','Weixin\WxController@GetuserInfo');//微信方法
 
-});
+   Route::get('/wx','Weixin\WxController@wxchet');//微信方法
+   Route::get('/GetuserInfo','Weixin\WxController@GetuserInfo');//微信方法
+
+
