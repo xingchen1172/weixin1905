@@ -20,7 +20,7 @@ Route::get('info',function(){
 });
 
 
-   Route::get('/wx','Weixin\WxController@wxchat');//微信方法
+   Route::get('/wx/wxchat','Weixin\WxController@wxchat');//微信方法
    Route::get('/GetuserInfo','Weixin\WxController@GetuserInfo');//微信方法
 
 
