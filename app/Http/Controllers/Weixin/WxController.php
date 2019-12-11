@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Weixin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Model\WxUser;
 
 class WxController extends Controller
 {
@@ -49,6 +50,11 @@ class WxController extends Controller
               'openid' =>  $openid,
               'sub_time'  => $xml_obj->CreateTime,
             ];
+
+            $uid = WxUser::insertGetId($user_data);
+            var_dump($uid);
+            die;
+
             //获取用户信息
             $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$openid.'&lang=zh_CN';
             $user_info = file_get_contents($url);

@@ -25,7 +25,7 @@ Route::get('/GetuserInfo','Weixin\WxController@GetuserInfo');//微信方法
 
 
 /*微信开发*/
-Route::get('/wx','Weixin\WxController@wechat');
+Route::get('/wx','Weixin\WxController@wxchat');
 /*接收用户的推送事件*/
 Route::post('/wx','Weixin\WxController@receiv');
 
