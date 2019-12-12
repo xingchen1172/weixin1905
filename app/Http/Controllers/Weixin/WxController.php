@@ -15,6 +15,10 @@ class WxController extends Controller
         //获取access_token
         $this->access_token=$this->getAccessToken();
       }
+
+
+
+
       protected function getAccessToken(){
         $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.env('WX_APPID').'&secret='.env('WX_APPSECRET');
         $data_json = file_get_contents($url);
@@ -22,24 +26,27 @@ class WxController extends Controller
         return $arr['access_token'];
       }
 
-     public function wxchat(){
-        $token='2259b56f5898cd6192c50d338723d9e4';
+
+
+     public function wxchat(){ 
+        $token='2259b56f5898cd6192c50';  //开发提前设置好的token
+
         $signature = $_GET["signature"];
         $timestamp = $_GET["timestamp"];
         $nonce = $_GET["nonce"];
-        $echostr=$_GET['echostr'];
-        
+        $echostr = $_GET["echostr"];
+
         $tmpArr = array($token, $timestamp, $nonce);
         sort($tmpArr, SORT_STRING);
         $tmpStr = implode( $tmpArr );
         $tmpStr = sha1( $tmpStr );
 
-        if($tmpStr == $signature){
-          echo $echostr;
+        if( $tmpStr == $signature ){
+            echo $echostr;
         }else{
-           die('not ok');
+            die("not ok");
         }
-     }
+  }
 
 
      /*接收微信推送事件*/
