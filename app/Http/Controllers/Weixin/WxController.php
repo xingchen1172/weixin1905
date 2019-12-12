@@ -8,8 +8,22 @@ use App\Model\WxUser;
 
 class WxController extends Controller
 {
+      protected $access_token;
+
+
+      public function __construct(){
+        //获取access_token
+        $this->access_token=$this->getAccessToken();
+      }
+      protected function getAccessToken(){
+        $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.env('WX_APPID').'&secret='.env('WX_APPSECRET');
+        $data_json = file_get_contents($url);
+        $arr = json_decode($data_json,true);
+        return $arr['access_token'];
+      }
+
      public function wxchat(){
-        $token='2259b56f5898cd6192c50';
+        $token='2259b56f5898cd6192c50d338723d9e4';
         $signature = $_GET["signature"];
         $timestamp = $_GET["timestamp"];
         $nonce = $_GET["nonce"];
