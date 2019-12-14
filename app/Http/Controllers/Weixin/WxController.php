@@ -216,6 +216,33 @@ class WxController extends Controller
         echo "下载素材成功";echo '</br>';
         echo "文件名： ". $file_name;
     }
+    protected function getMedia2($media_id,$media_type)
+    {
+        $url = 'https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$this->access_token.'&media_id='.$media_id;
+        //获取素材内容
+        $client = new Client();
+        $response = $client->request('GET',$url);
+        //获取文件扩展名
+        $f = $response->getHeader('Content-disposition')[0];
+        $extension = substr(trim($f,'"'),strpos($f,'.'));
+        //获取文件内容
+        $file_content = $response->getBody();
+        // 保存文件
+        $save_path = 'wx_media/';
+        if($media_type=='image'){       //保存图片文件
+            $file_name = date('YmdHis').mt_rand(11111,99999) . $extension;
+            $save_path = $save_path . 'imgs/' . $file_name;
+        }elseif($media_type=='voice'){  //保存语音文件
+            $file_name = date('YmdHis').mt_rand(11111,99999) . $extension;
+            $save_path = $save_path . 'voice/' . $file_name;
+        }elseif($media_type=='video')
+        {
+            $file_name = date('YmdHis').mt_rand(11111,99999) . $extension;
+            $save_path = $save_path . 'video/' . $file_name;
+        }
+        file_put_contents($save_path,$file_content);
+    }
+
 
 
 
