@@ -197,7 +197,28 @@ class WxController extends Controller
         $json_str = file_get_contents($url);
         $log_file = 'wx_user.log';
         file_put_contents($log_file,$json_str,FILE_APPEND);
+    
+      }
+
+
+      /**
+     * 获取素材
+     */
+    public function getMedia()
+    {
+        $media_id = 'MvV4Gy3hH5uSB4XJyYj1apLi-_2xVPEf4eyfg_CWpiEOjhnmIkQOZ5uvxOW1d-8D';
+        $url = 'https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$this->access_token.'&media_id='.$media_id;
+        //获取素材内容
+        $data = file_get_contents($url);
+        // 保存文件
+        $file_name = date('YmdHis').mt_rand(11111,99999) . '.amr';
+        file_put_contents($file_name,$data);
+        echo "下载素材成功";echo '</br>';
+        echo "文件名： ". $file_name;
     }
+
+
+
 }
 
 
