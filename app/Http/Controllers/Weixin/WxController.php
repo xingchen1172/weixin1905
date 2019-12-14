@@ -72,13 +72,13 @@ class WxController extends Controller
     public function receiv(){
         $log_file = "wx.log";
         //将接收到的文件记录到日志文件
-        $xml = file_get_contents("php://input");
-        $data = date('Y-m-d H:i:s') . $xml;
+        $xml_str = file_get_contents("php://input");
+        $data = date('Y-m-d H:i:s') . $xml_str;
         file_put_contents($log_file,$data,FILE_APPEND);   //追加写
 
         //处理xml数据
         file_put_contents('xml.log',$xml_str);
-        $xml_arr = simplexml_load_string($xml_str);
+        $xml_obj = simplexml_load_string($xml_str);
 
 
         $event = $xml_obj->Event;    //获取时间类型
