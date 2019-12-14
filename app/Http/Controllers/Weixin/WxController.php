@@ -70,46 +70,118 @@ class WxController extends Controller
 
      /*接收微信推送事件*/
     public function receiv(){
-        $log_file = "wx.log";
-        //将接收到的文件记录到日志文件
-        $xml_str = file_get_contents("php://input");
-        $data = date('Y-m-d H:i:s') . $xml_str;
-        file_put_contents($log_file,$data,FILE_APPEND);   //追加写
-
-        //处理xml数据
-        file_put_contents('xml.log',$xml_str);
-        $xml_obj = simplexml_load_string($xml_str);
-
-
-        $event = $xml_obj->Event;    //获取时间类型
-        if($event == 'subscribe'){
-          $openid = $xml_obj->FromUserName;     //获取用户的openid
-          //获取用户信息
-          $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$openid.'&lang=zh_CN';
-          $user_info = file_get_contents($url);   //
-          file_put_contents('wx_user.log',$user_info,FILE_APPEND);
-
-        }
-
-        //判断消息类型
-        $msg_type = $xml_obj->MsgType;
-
-        $touser = $xml_obj->FromUserName;   //接收消息的用户openid
-        $fromuser = $xml_obj->ToUserName;   //开发者公众号id
-        $time = time();
-
-        if($msg_type == 'text'){
-            $content =date('Y-m-d H:i:s') . $xml_obj->Content;
-            $response_text = '<xml><ToUserName><![CDATA['.$touser.']]></ToUserName>
-            <FromUserName><![CDATA['.$fromuser.']]></FromUserName>
-            <CreateTime>'.$time.'</CreateTime>
-            <MsgType><![CDATA[text]]></MsgType>
-            <Content><![CDATA['.$content.']]></Content>
-            </xml>';
-          echo $response_text;      //回复微信消息
-
-        }
-
+              $log_file = "wx.log";       // public
+              //将接收的数据记录到日志文件
+              $xml_str = file_get_contents("php://input");
+              $data = date('Y-m-d H:i:s')  . ">>>>>>\n" . $xml_str . "\n\n";
+              file_put_contents($log_file,$data,FILE_APPEND);     //追加写
+              //处理xml数据
+              $xml_obj = simplexml_load_string($xml_str);
+              $event = $xml_obj->Event;       // 获取事件类型
+              if($event=='subscribe'){
+                  $openid = $xml_obj->FromUserName;       //获取用户的openid
+                  //判断用户是否已存在
+                  $u = WxUserModel::where(['openid'=>$openid])->first();
+                  if($u){
+                      $msg = '欢迎回来';
+                      $xml = '<xml>
+        <ToUserName><![CDATA['.$openid.']]></ToUserName>
+        <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+        <CreateTime>'.time().'</CreateTime>
+        <MsgType><![CDATA[text]]></MsgType>
+        <Content><![CDATA['.$msg.']]></Content>
+        </xml>';
+                      echo $xml;
+                  }else{
+                      //获取用户信息 zcza
+                      $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$openid.'&lang=zh_CN';
+                      $user_info = file_get_contents($url);       //
+                      $u = json_decode($user_info,true);
+                      //echo '<pre>';print_r($u);echo '</pre>';die;
+                      //入库用户信息
+                      $user_data = [
+                          'openid'    => $openid,
+                          'nickname'  => $u['nickname'],
+                          'sex'       => $u['sex'],
+                          'headimgurl'    => $u['headimgurl'],
+                          'subscribe_time'    => $u['subscribe_time']
+                      ];
+                      //openid 入库
+                      $uid = WxUserModel::insertGetId($user_data);
+                      $msg = "谢谢关注";
+                      //回复用户关注
+                      $xml = '<xml>
+        <ToUserName><![CDATA['.$openid.']]></ToUserName>
+        <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+        <CreateTime>'.time().'</CreateTime>
+        <MsgType><![CDATA[text]]></MsgType>
+        <Content><![CDATA['.$msg.']]></Content>
+        </xml>';
+                      echo $xml;
+                  }
+              }
+              // 判断消息类型
+              $msg_type = $xml_obj->MsgType;
+              $touser = $xml_obj->FromUserName;       //接收消息的用户openid
+              $fromuser = $xml_obj->ToUserName;       // 开发者公众号的 ID
+              $time = time();
+              $media_id = $xml_obj->MediaId;
+              if($msg_type=='text'){
+                  $content = date('Y-m-d H:i:s') . $xml_obj->Content;
+                  $response_text = '<xml>
+        <ToUserName><![CDATA['.$touser.']]></ToUserName>
+        <FromUserName><![CDATA['.$fromuser.']]></FromUserName>
+        <CreateTime>'.$time.'</CreateTime>
+        <MsgType><![CDATA[text]]></MsgType>
+        <Content><![CDATA['.$content.']]></Content>
+        </xml>';
+                  echo $response_text;            // 回复用户消息
+                  // TODO 消息入库
+              }elseif($msg_type=='image'){    // 图片消息
+                  // TODO 下载图片
+                  $this->getMedia2($media_id,$msg_type);
+                  // TODO 回复图片
+                  $response = '<xml>
+        <ToUserName><![CDATA['.$touser.']]></ToUserName>
+        <FromUserName><![CDATA['.$fromuser.']]></FromUserName>
+        <CreateTime>'.time().'</CreateTime>
+        <MsgType><![CDATA[image]]></MsgType>
+        <Image>
+          <MediaId><![CDATA['.$media_id.']]></MediaId>
+        </Image>
+        </xml>';
+                  echo $response;
+              }elseif($msg_type=='voice'){          // 语音消息
+                  // 下载语音
+                  $this->getMedia2($media_id,$msg_type);
+                  // TODO 回复语音
+                  $response = '<xml>
+        <ToUserName><![CDATA['.$touser.']]></ToUserName>
+        <FromUserName><![CDATA['.$fromuser.']]></FromUserName>
+        <CreateTime>'.time().'</CreateTime>
+        <MsgType><![CDATA[voice]]></MsgType>
+        <Voice>
+          <MediaId><![CDATA['.$media_id.']]></MediaId>
+        </Voice>
+        </xml>';
+                  echo $response;
+              }elseif($msg_type=='video'){
+                  // 下载小视频
+                  $this->getMedia2($media_id,$msg_type);
+                  // 回复
+                  $response = '<xml>
+        <ToUserName><![CDATA['.$touser.']]></ToUserName>
+        <FromUserName><![CDATA['.$fromuser.']]></FromUserName>
+        <CreateTime>'.time().'</CreateTime>
+        <MsgType><![CDATA[video]]></MsgType>
+        <Video>
+          <MediaId><![CDATA['.$media_id.']]></MediaId>
+          <Title><![CDATA[测试]]></Title>
+          <Description><![CDATA[不可描述]]></Description>
+        </Video>
+          </xml>';
+          echo $response;
+      }
 
         
       }
