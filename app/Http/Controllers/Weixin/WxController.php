@@ -77,7 +77,9 @@ class WxController extends Controller
         file_put_contents($log_file,$data,FILE_APPEND);   //追加写
 
         //处理xml数据
+        file_put_contents('xml.log',$xml_str);
         $xml_arr = simplexml_load_string($xml_str);
+
 
         $event = $xml_obj->Event;    //获取时间类型
         if($event == 'subscribe'){
