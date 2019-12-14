@@ -56,7 +56,7 @@ class WxController extends Controller
         $nonce = $_GET["nonce"];
         $echostr = $_GET["echostr"];
 
-        $tmpArr = array($token, $timestamp, $nonce);
+        $tmpArr = array($token, $timestamp, $nonce);      //shaya
         sort($tmpArr, SORT_STRING);
         $tmpStr = implode( $tmpArr );
         $tmpStr = sha1( $tmpStr );

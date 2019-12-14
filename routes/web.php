@@ -25,7 +25,7 @@ Route::get('info',function(){
 
 
 /*微信开发*/
-Route::get('/wx/test','Weixin\WxController@test');
+Route::get('/wx/test','Weixin\WxController@test');   //woyebzdws
 Route::get('/wx','Weixin\WxController@wxchat'); 
 Route::get('/wx/media','Weixin\WxController@getMedia');//获取临时素材
 
