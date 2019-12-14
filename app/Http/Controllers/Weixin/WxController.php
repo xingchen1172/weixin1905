@@ -74,7 +74,12 @@ class WxController extends Controller
         //将接收到的文件记录到日志文件
         $xml = file_get_contents("php://input");
         $data = date('Y-m-d H:i:s') . $xml;
-        file_put_contents($log_file,$data,FILE_APPEND);
+        file_put_contents($log_file,$data,FILE_APPEND);   //追加写
+
+        //处理xml数据
+        $xml_arr = simplexml_load_string($xml_str);
+
+        //入库   其他逻辑
 
 
         

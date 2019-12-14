@@ -29,6 +29,7 @@ Route::get('/wx/test','Weixin\WxController@test');
 Route::get('/wx','Weixin\WxController@wxchat'); 
 Route::get('/wx/media','Weixin\WxController@getMedia');//获取临时素材
 
+
 /*接收用户的推送事件*/
 Route::post('/wx','Weixin\WxController@receiv');
 
