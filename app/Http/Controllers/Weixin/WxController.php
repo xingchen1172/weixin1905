@@ -79,7 +79,17 @@ class WxController extends Controller
         //处理xml数据
         $xml_arr = simplexml_load_string($xml_str);
 
-        //入库   其他逻辑
+        $event = $xml_obj->Event;    //获取时间类型
+        if($event == 'subscribe'){
+          $openid = $xml_obj->FromUserName;     //获取用户的openid
+          //获取用户信息
+          $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$openid.'&lang=zh_CN';
+          $user_info = file_get_contents($url);   //
+          file_put_contents('wx_user.log',$user_info,FILE_APPEND);
+
+
+
+        }
 
 
         
