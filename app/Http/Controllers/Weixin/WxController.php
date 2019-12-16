@@ -78,27 +78,32 @@ class WxController extends Controller
               file_put_contents($log_file,$data,FILE_APPEND);     //追加写
               //处理xml数据
               $xml_obj = simplexml_load_string($xml_str);
-              $event = $xml_obj->Event;       // 获取事件类型
-              if($event=='subscribe'){
+              $event = $xml_obj->Event; // 获取事件类型
+              // echo $event;exit; 
+              if($event == 'subscribe'){
                   $openid = $xml_obj->FromUserName;       //获取用户的openid
+                  // var_dump($openid);
                   //判断用户是否已存在
                   $u = WxUser::where(['openid'=>$openid])->first();
+                  // dd($u);
                   if($u){
                       $msg = '欢迎回来';
                       $xml = '<xml>
-        <ToUserName><![CDATA['.$openid.']]></ToUserName>
-        <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
-        <CreateTime>'.time().'</CreateTime>
-        <MsgType><![CDATA[text]]></MsgType>
-        <Content><![CDATA['.$msg.']]></Content>
-        </xml>';
+                <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+                <CreateTime>'.time().'</CreateTime>
+                <MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA['.$msg.']]></Content>
+                </xml>';
                       echo $xml;
                   }else{
+                    // echo "1111";
                       //获取用户信息 zcza
                       $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$openid.'&lang=zh_CN';
                       $user_info = file_get_contents($url);       //
+                      // var_dump($user_info);die;  
                       $u = json_decode($user_info,true);
-                      //echo '<pre>';print_r($u);echo '</pre>';die;
+                      // echo '<pre>';print_r($u);echo '</pre>';die;
                       //入库用户信息
                       $user_data = [
                           'openid'    => $openid,
