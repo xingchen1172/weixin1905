@@ -25,15 +25,17 @@ Route::get('info',function(){
 
 
 /*微信开发*/
-Route::get('/wx/test','Weixin\WxController@test');   //woyebzdws
-Route::get('/wx','Weixin\WxController@wxchat'); 
-Route::get('/wx/media','Weixin\WxController@getMedia');//获取临时素材
+Route::any('/wx/test','Weixin\WxController@test');   //woyebzdws
+Route::any('/wx','Weixin\WxController@wxchat'); 
+Route::any('/wx/media','Weixin\WxController@getMedia');//获取临时素材
 
 
 /*接收用户的推送事件*/
-Route::post('/wx','Weixin\WxController@receiv');
+Route::any('/wx','Weixin\WxController@receiv');
+
+Route::get('/wx/flush/access_token','Weixin\WxController@flushAccessToken');        //刷新access_token
+Route::get('/wx/menu','Weixin\WxController@createMenu');        //创建菜单
 
 
-
-Route::get('/test/xml','Test\TestController@xmlTest');
+Route::any('/test/xml','Test\TestController@xmlTest');
 
