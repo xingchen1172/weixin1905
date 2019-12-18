@@ -79,9 +79,9 @@ class WxController extends Controller
               //处理xml数据
               $xml_obj = simplexml_load_string($xml_str);
               $event = $xml_obj->Event; // 获取事件类型
+              $openid = $xml_obj->FromUserName;       //获取用户的openid
               // echo $event;exit; 
               if($event == 'subscribe'){
-                  $openid = $xml_obj->FromUserName;       //获取用户的openid
                   // var_dump($openid);
                   //判断用户是否已存在
                   $u = WxUser::where(['openid'=>$openid])->first();
@@ -125,6 +125,35 @@ class WxController extends Controller
         </xml>';
                       echo $xml;
                   }
+              }elseif($event=='CLICK'){         //菜单点击事件
+                    echo "CLICK CLICK";
+
+                    if($xml_obj->EventKey=='weather'){
+                        
+                          //如果是 获取天气
+
+                        //请求第三方接口 获取天气
+                        $weather_api ='https://free-api.heweather.net/s6/weather/now?location=beijing&key=23805b46c8bf4746ae9d38dd4457c733';
+                        $weather_info = file_get_contents($weather_api);
+                        $weather_info_arr = json_decode($weather_info,true);
+                        // echo '<pre>';print_r($weather_info_arr);echo '</pre>';die;
+                        $cond_txt = $weather_info_arr['HeWeather6'][0]['now']['cond_txt'];
+                        $tmp = $weather_info_arr['HeWeather6'][0]['tmp'];
+                        $wind_dir = $weather_info_arr['HeWeather6'][0]['wind_dir'];
+
+                        $msg = $cond_txt . '温度:' .$tmp.'风向: '.$wind_dir;
+
+                        $response_xml = '<xml>
+                        <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                        <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+                        <CreateTime>'.time().'</CreateTime>
+                        <MsgType><![CDATA[text]]></MsgType>
+                        <Content><![CDATA['.date('Y-m-d H:i:s') . '晴天' .']]></Content>
+                        </xml>';
+                        echo $response_xml;
+                    }
+
+                    
               }
               // 判断消息类型
               $msg_type = $xml_obj->MsgType;
@@ -270,21 +299,12 @@ class WxController extends Controller
                 [
                     'type'  => 'click',
                     'name'  => '天气预报',
-                    'key'   => '1905wx_key'
+                    'key'   => 'weather'
                 ],
-                [
-                    'type'  => 'click',
-                    'name'  => '外星八卦',
-                    'key'   => '1905wx_key2'
-                ],
-                [
-                    'type'  => 'click',
-                    'name'  => '嚣张的步伐',
-                    'key'   => '1905wx_key3'
-                ]
+               
             ]
         ];
-        $menu_json = json_encode($menu);
+        $menu_json = json_encode($menu,JSON_UNESCAPED_UNICODE);
         $client = new Client();
         $response = $client->request('POST',$url,[
             'body'  => $menu_json
