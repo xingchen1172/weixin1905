@@ -9,7 +9,7 @@ class VoteController extends Controller
 {
     public function index(){
         // echo __METHOD__;
-        echo '<pre>';print_r($_GET);echo'</pre>';
+        // echo '<pre>';print_r($_GET);echo'</pre>';
 
         $code = $_GET['code'];
         
