@@ -23,6 +23,11 @@ class VoteController extends Controller
         
         $openid = $user_info['openid'];
         $key = 's:vote:zhangsan';
+
+        //判断是否已经投过票
+        if(Redis::sIsMember($key,$user_info['openid'])){
+            echo "已经投过票了";die;
+        }
         Redis::Sadd($key,$openid);
 
         $menbers = Redis::Smembers($key);       //获取所有投票人的openid
