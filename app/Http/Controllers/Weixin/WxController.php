@@ -136,7 +136,6 @@ class WxController extends Controller
                         $weather_api ='https://free-api.heweather.net/s6/weather/now?location=beijing&key=23805b46c8bf4746ae9d38dd4457c733';
                         $weather_info = file_get_contents($weather_api);
                         $weather_info_arr = json_decode($weather_info,true);
-                        // echo '<pre>';print_r($weather_info_arr);echo '</pre>';die;
                         $cond_txt = $weather_info_arr['HeWeather6'][0]['now']['cond_txt'];
                         $tmp = $weather_info_arr['HeWeather6'][0]['tmp'];
                         $wind_dir = $weather_info_arr['HeWeather6'][0]['wind_dir'];
