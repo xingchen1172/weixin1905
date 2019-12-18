@@ -137,8 +137,8 @@ class WxController extends Controller
                         $weather_info = file_get_contents($weather_api);
                         $weather_info_arr = json_decode($weather_info,true);
                         $cond_txt = $weather_info_arr['HeWeather6'][0]['now']['cond_txt'];
-                        $tmp = $weather_info_arr['HeWeather6'][0]['tmp'];
-                        $wind_dir = $weather_info_arr['HeWeather6'][0]['wind_dir'];
+                        $tmp = $weather_info_arr['HeWeather6'][0]['now']['tmp'];
+                        $wind_dir = $weather_info_arr['HeWeather6'][0]['now']['wind_dir'];
 
                         $msg = $cond_txt . '温度:' .$tmp.'风向: '.$wind_dir;
 
