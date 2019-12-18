@@ -793,3 +793,12 @@
 <EventKey><![CDATA[1905_key]]></EventKey>
 </xml>
 
+2019-12-18 03:53:18>>>>>>
+<xml><ToUserName><![CDATA[gh_bd6f2a0d5e38]]></ToUserName>
+<FromUserName><![CDATA[oGdUGtzpBgCPA604nZ7GUsGhLqdY]]></FromUserName>
+<CreateTime>1576640417</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[CLICK]]></Event>
+<EventKey><![CDATA[weather]]></EventKey>
+</xml>
+

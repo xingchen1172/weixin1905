@@ -26,9 +26,10 @@ class WxController extends Controller
 
       protected function getAccessToken(){
 
-        $key = 'wx_asscess_token';
+        $key = 'wx_access_token';
 
         $access_token = Redis::get($key);
+        // dd($access_token);
 
         // var_dump($access_token);die;
         if($access_token){
@@ -147,7 +148,7 @@ class WxController extends Controller
                         <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
                         <CreateTime>'.time().'</CreateTime>
                         <MsgType><![CDATA[text]]></MsgType>
-                        <Content><![CDATA['.date('Y-m-d H:i:s') . '晴天' .']]></Content>
+                        <Content><![CDATA['.date('Y-m-d H:i:s') . $msg .']]></Content>
                         </xml>';
                         echo $response_xml;
                     }
@@ -282,7 +283,7 @@ class WxController extends Controller
      */
     public function flushAccessToken()
     {
-        $key = 'access_token';
+        $key = 'wx_access_token';
         Redis::del($key);
         echo $this->getAccessToken();
     }
