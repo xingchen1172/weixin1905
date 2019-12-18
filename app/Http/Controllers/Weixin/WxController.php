@@ -126,7 +126,7 @@ class WxController extends Controller
                       echo $xml;
                   }
               }elseif($event=='CLICK'){         //菜单点击事件
-                    echo "CLICK CLICK";
+                    // echo "CLICK CLICK";
 
                     if($xml_obj->EventKey=='weather'){
                         
