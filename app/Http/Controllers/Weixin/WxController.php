@@ -306,7 +306,7 @@ class WxController extends Controller
                     'key'   => 'weather'
                 ],
                 [
-                  'type'  => 'click',
+                  'type'  => 'view',
                   'name'  => '投票',
                   'url'   => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx862686ded89ed2cd&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_userinfo&state=ABCD1905#wechat_redirect'
                 ],
