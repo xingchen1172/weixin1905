@@ -294,7 +294,9 @@ class WxController extends Controller
     {
 
         $url = 'http://wx1905.qxywzc.cn/vote';
+        $url2 = 'http://wx1905.qxywzc.cn/';
         $redirect_uri = urlencode($url);        //授权后跳转页面
+        $redirect_uri2 = urlencode($url2);        //授权后跳转页面
 
         //创建自定义菜单的接口地址
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->access_token;
@@ -309,6 +311,11 @@ class WxController extends Controller
                   'type'  => 'view',
                   'name'  => '投票',
                   'url'   => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx862686ded89ed2cd&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_userinfo&state=ABCD1905#wechat_redirect'
+                ],
+                [
+                  'type'  => 'view',
+                  'name'  => '商场',
+                  'url'   => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx862686ded89ed2cd&redirect_uri='.$redirect_uri2.'&response_type=code&scope=snsapi_userinfo&state=ABCD1905#wechat_redirect'
                 ],
             ]
         ];
