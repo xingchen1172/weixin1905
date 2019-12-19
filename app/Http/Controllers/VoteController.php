@@ -46,20 +46,17 @@ class VoteController extends Controller
         $total = Redis::zCard($key);        //统计投票总人数
         echo '投票总人数 :' .$total;echo'</br>';
         $menbers = Redis::zRange($key,0,-1,true);       //获取所有投票人的openid
-        echo "投票总人数 :" .$total;
-        echo '<hr>';
-        echo '<pre>';print_r($menbers);echo '</pre>';
+
+        // echo '<pre>';print_r($menbers);echo '</pre>';
         foreach($menbers as $k=>$v){
             echo "用户 :" .$k. '投票时间 :' .date('Y-m-d H:i:s',$v);echo '</br>';
             $u_k = 'h:u:'.$k;
-            $u = Redis::hMget($u_k,['openid','nickname','sex','headimgurl']);
-            echo '<pre>';print_r($u);echo '</pre>';
-            echo '<img src="'.$u['headimgurl'].'">';echo '</br>';
+            $u = Redis::hgetAll($u_k);
+            // $u = Redis::hMget($u_k,['openid','nickname','sex','headimgurl']);
+            // echo '<pre>';print_r($u);echo '</pre>';echo '</hr>';
+            echo '<img src="'.$u['headimgurl'].'">';
             
         }
-        // $redis_key = 'vote';
-        // $number = Redis::incr($redis_key);
-        // echo "投票成功,当前票数 :" .$number;
     }
     /**
      * 根据code获取access_token
@@ -94,7 +91,7 @@ class VoteController extends Controller
             'age'        => 22,
             'sex'         =>1
         ]; 
-        Redis::hWset($key,$user_info);
+        Redis::hMset($key,$user_info);
         die;
         echo '<hr>';
         $u = Redis::hGetAll($key);
