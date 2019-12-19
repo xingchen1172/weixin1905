@@ -7,6 +7,13 @@ use Illuminate\Support\Facades\Redis;
 
 class VoteController extends Controller
 {
+    public function delkey(){
+        $key = $_GET['k'];
+        echo 'Delete key:' .$key;echo '</br>';
+        Redis::del($key);
+    }
+
+
     public function index(){
         // echo __METHOD__;
         // echo '<pre>';print_r($_GET);echo'</pre>';
