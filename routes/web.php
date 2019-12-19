@@ -38,6 +38,7 @@ Route::get('/wx/menu','Weixin\WxController@createMenu');        //创建菜单
 
 
 Route::get('/vote','VoteController@index');        //微信投票
+Route::get('/dev/redis/del','VoteController@delkey');        //微信投票
 
 
 Route::any('/test/xml','Test\TestController@xmlTest');
