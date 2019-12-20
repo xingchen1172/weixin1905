@@ -27,7 +27,7 @@ class IndexController extends Controller
         $data = [
             'u' => $user_info
         ];
-       return view('index/index');
+       return view('index/index',$data);
     }
 
     /**
