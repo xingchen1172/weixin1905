@@ -45,4 +45,5 @@ Route::get('/dev/redis/del','VoteController@delkey');        //微信投票
 
 
 Route::any('/test/xml','Test\TestController@xmlTest');
+Route::any('/goods/index','Goods\IndexController@index');		//详情页首页
 
