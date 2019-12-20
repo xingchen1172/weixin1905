@@ -472,7 +472,7 @@
 						<button class="btn button-default">ADD TO CART</button>
 					</div>
 				</div>
-				<div class="col s6">
+				<!-- <div class="col s6">
 					<div class="content">
 						<img src="img/product-new2.png" alt="">
 						<h6><a href="">Fashion Men's</a></h6>
@@ -481,9 +481,9 @@
 						</div>
 						<button class="btn button-default">ADD TO CART</button>
 					</div>
-				</div>
+				</div> -->
 			</div>
-			<div class="row margin-bottom">
+			<!-- <div class="row margin-bottom">
 				<div class="col s6">
 					<div class="content">
 						<img src="img/product-new3.png" alt="">
@@ -493,8 +493,8 @@
 						</div>
 						<button class="btn button-default">ADD TO CART</button>
 					</div>
-				</div>
-				<div class="col s6">
+				</div> -->
+				<!-- <div class="col s6">
 					<div class="content">
 						<img src="img/product-new4.png" alt="">
 						<h6><a href="">Fashion Men's</a></h6>
@@ -503,7 +503,7 @@
 						</div>
 						<button class="btn button-default">ADD TO CART</button>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>
